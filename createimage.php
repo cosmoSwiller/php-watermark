@@ -1,14 +1,15 @@
 function createImage($imagedata){
-		// take image from Facebook URL (passed as $imagedata) and save to uploads directory 
-		$upload_dir = ($_SERVER['DOCUMENT_ROOT'] .'/wayfaringApp/uploads/');
-        $filename =generateFilename().'.jpg';
-        $filelocation=$upload_dir . $filename;
+
+		// take image from URL (passed as $imagedata) and save to uploads directory 
+		$upload_dir = ($_SERVER['DOCUMENT_ROOT'] .'/uploads/');
+        	$filename =generateFilename().'.jpg';
+        	$filelocation=$upload_dir . $filename;
 		file_put_contents($filelocation,file_get_contents($imagedata));
 		$localimage = $filename;
 		
 		// create variables for background image and watermark
-		$dest = imagecreatefromjpeg('http://dev.stpearse.com/wayfaringApp/uploads/' . $localimage);
-		$src = imagecreatefrompng('http://dev.stpearse.com/wayfaringApp/images/overlay.png');
+		$dest = imagecreatefromjpeg('background.jpg');
+		$src = imagecreatefrompng('overlay.png');
 		
 		// save PNG alpha info
 		imagesavealpha($src, true); 
@@ -17,8 +18,8 @@ function createImage($imagedata){
 		imagealphablending($dest, true);
 		
 		// find image sizes
-		list($newwidth, $newheight, $type, $attr) = getimagesize('http://dev.stpearse.com/wayfaringApp/images/overlay.png');
-		list($width, $height, $type, $attr) = getimagesize('http://dev.stpearse.com/wayfaringApp/uploads/' . $localimage);
+		list($newwidth, $newheight, $type, $attr) = getimagesize('overlay.png');
+
 		//combine both images
 		imagecopyresampled($dest, $src, 200 , 100, 0, 0, $newwidth , $newheight, $newwidth , $newheight); 
 		
